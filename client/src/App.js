@@ -4,6 +4,9 @@ import './App.css';
 
 function App() {
 
+    const login = () => {
+        window.location = '/auth/login'
+    }
     const [data, setData] = useState(null)
 
     useEffect(() => {
@@ -19,7 +22,9 @@ function App() {
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
           <p>{!data ? "Loading " : data}</p>
-
+          <button onClick={login}>
+              Login
+          </button>
       </header>
     </div>
   );
