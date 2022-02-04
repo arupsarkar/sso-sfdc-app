@@ -9,16 +9,15 @@ function App() {
         e.preventDefault()
         console.log('---> clicked login')
         window.location = '/auth/login'
-        axios.get('/auth/login', {
-            method: 'GET',
-            headers: {
-                'Access-Control-Allow-Origin': '*',
-            }
-        })
-            .then(res => {
-                console.log(res)
-            })
-        //window.location.href = '/auth/login'
+        // axios.get('/auth/login', {
+        //     method: 'GET',
+        //     headers: {
+        //         'Access-Control-Allow-Origin': '*',
+        //     }
+        // })
+        //     .then(res => {
+        //         console.log(res)
+        //     })
     }
 
     const getData = async () => {
@@ -30,16 +29,18 @@ function App() {
             })
     }
 
-    const logout = () => {
+    const logout = async (e) => {
+        e.preventDefault()
         console.log('---> logout')
-        axios.get('/auth/logout')
-            .then(res => {
-                console.log('---> data from server ', JSON.stringify(res))
-                setData("User Logged Out.")
-            })
-            .catch(err => {
-                setData("User Logged Out error." + err)
-            })
+        window.location = '/auth/logout'
+        // axios.get('/auth/logout')
+        //     .then(res => {
+        //         console.log('---> data from server ', JSON.stringify(res))
+        //         setData("User Logged Out.")
+        //     })
+        //     .catch(err => {
+        //         setData("User Logged Out error." + err)
+        //     })
     }
 
     const gotoCommunity = () => {
