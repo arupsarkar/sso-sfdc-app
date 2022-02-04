@@ -38,7 +38,19 @@ app.use(
 
 const getSession = (req, res) => {
     const session = req.session
+    if(!session.sfdcAuth) {
+        res.status(401).send('no active session')
+        return null
+    }
+    return session
+}
 
+const resumeSalesforceConnection = (session) => {
+    return new jsforce.Connection({
+        instanceUrl: session.sfdcAuth.instanceUrl,
+        accessToken: session.sfdcAuth.accessToken,
+        version: process.env.apiVersion
+    })
 }
 
 
@@ -49,7 +61,7 @@ app.get('/api', async (req, res, next) => {
 
 app.get('/auth/login', async (req, res, next) => {
     console.log('calling oauth login')
-    res.redirect(oauth2.getAuthorizationUrl({scope: 'api web refresh_token'}))
+    res.redirect(oauth2.getAuthorizationUrl({scope: 'api'}))
 })
 
 app.get('/auth/callback', async (req, res, next) => {
@@ -57,12 +69,14 @@ app.get('/auth/callback', async (req, res, next) => {
         res.status(500).send('failed to get code from server callback')
         return
     }
-
+    console.log('---> code :', req.query.code)
     // authenticate with OAuth
-    const conn = new jsforce.Connection({
+    const conn = await new jsforce.Connection({
         oauth2: oauth2,
         version: process.env.apiVersion
     })
+
+
 
     conn.authorize( req.query.code, (error, userInfo) => {
         if(error){
@@ -70,6 +84,8 @@ app.get('/auth/callback', async (req, res, next) => {
             res.status(500).json(error)
             return
         }
+        console.log('---> token :', conn.accessToken)
+        console.log('---> instance url :', conn.instanceUrl)
 
         req.session.sfdcAuth = {
             instanceUrl: conn.instanceUrl,
@@ -77,6 +93,28 @@ app.get('/auth/callback', async (req, res, next) => {
         }
 
         return res.redirect('/index.html')
+    })
+
+})
+
+app.get('/query', (req, res, next) => {
+    //ensure session is active
+    const session = getSession(req, res)
+    if(session == null) {
+        return
+    }
+    //query
+    const conn = resumeSalesforceConnection(session)
+    const query = 'SELECT Id FROM Account LIMIT 2'
+    conn.query(query, (error, result) => {
+        if(error) {
+            console.error('salesforce data api error ' + JSON.stringify(error))
+            return
+        }else{
+            res.send(result)
+            return
+        }
+
     })
 
 })
