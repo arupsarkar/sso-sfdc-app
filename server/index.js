@@ -2,6 +2,7 @@ const express = require('express')
 const path = require('path')
 const jsforce = require('jsforce')
 const session = require('express-session')
+const cors = require('cors')
 const PORT = process.env.PORT || 8080
 
 
@@ -22,7 +23,7 @@ const oauth2 = new jsforce.OAuth2({
 })
 
 const app = express()
-
+app.use(cors())
 app.use(
     session(
         {
