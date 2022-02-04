@@ -17,7 +17,7 @@ if(!process.env.loginUrl && !process.env.consumerkey){
 
 const oauth2 = new jsforce.OAuth2({
     loginUrl: process.env.loginUrl,
-    clientId: process.env.consumerkey,
+    clientId: process.env.consumerKey,
     clientSecret: process.env.consumerSecret,
     redirectUri: process.env.callbackUrl
 })
@@ -60,16 +60,17 @@ app.get('/api', async (req, res, next) => {
 })
 
 app.get('/auth/login', async (req, res, next) => {
-    console.log('calling oauth login')
+    console.log(new Date(), 'calling oauth login')
     res.redirect(oauth2.getAuthorizationUrl({scope: 'api'}))
 })
 
 app.get('/auth/callback', async (req, res, next) => {
+    console.log('---> code :', req.query.code)
     if(!req.query.code) {
         res.status(500).send('failed to get code from server callback')
         return
     }
-    console.log('---> code :', req.query.code)
+
     // authenticate with OAuth
     const conn = await new jsforce.Connection({
         oauth2: oauth2,
@@ -97,20 +98,23 @@ app.get('/auth/callback', async (req, res, next) => {
 
 })
 
-app.get('/query', (req, res, next) => {
+app.get('/query', async (req, res, next) => {
     //ensure session is active
-    const session = getSession(req, res)
+    const session = await getSession(req, res)
     if(session == null) {
         return
     }
+    console.log('---> session ', session)
     //query
-    const conn = resumeSalesforceConnection(session)
+    const conn = await resumeSalesforceConnection(session)
+    console.log('---> conn ', conn)
     const query = 'SELECT Id FROM Account LIMIT 2'
-    conn.query(query, (error, result) => {
+    await conn.query(query, (error, result) => {
         if(error) {
             console.error('salesforce data api error ' + JSON.stringify(error))
             return
         }else{
+            console.log('---> result ', result)
             res.send(result)
             return
         }

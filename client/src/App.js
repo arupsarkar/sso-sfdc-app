@@ -4,36 +4,33 @@ import './App.css';
 
 function App() {
 
-    const login = (e) => {
+    const login = async (e) => {
         e.preventDefault()
         console.log('---> clicked login')
         const requestOptions = {
             method: 'GET',
             mode: 'no-cors',
-            headers: { 'Access-Control-Allow-Origin': '*' },
         }
-        fetch('/auth/login', requestOptions).then(r => console.log(r))
+        await fetch('/auth/login', requestOptions).then(r => console.log(r))
 
         //window.location.href = '/auth/login'
     }
 
-    const getData = () => {
+    const getData = async () => {
+        console.log('---> getData')
         const requestOptions = {
             method: 'GET',
             mode: 'no-cors',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Accept' : 'application/json'
             },
         }
 
-        fetch('/query', requestOptions)
+        await fetch('/query', requestOptions)
             .then((res) => {
                 console.log('---> res ', res)
                 setData(res)
-            })
-            .then((data) => {
-                console.log('---> data ', data)
-                setData(data)
             })
             .catch(err => {
                 console.log('---> err ', err)
@@ -42,7 +39,7 @@ function App() {
     }
 
     const logout = () => {
-
+        console.log('---> logout')
     }
 
     const [data, setData] = useState(null)
