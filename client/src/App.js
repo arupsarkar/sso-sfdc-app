@@ -7,7 +7,9 @@ function App() {
     const login = (e) => {
         e.preventDefault()
         console.log('---> clicked login')
-        window.location.href = '/auth/login'
+        fetch('/auth/login').then(r => console.log(r))
+
+        //window.location.href = '/auth/login'
     }
     const [data, setData] = useState(null)
 
