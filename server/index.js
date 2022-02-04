@@ -129,15 +129,15 @@ app.get('/auth/logout', async (req, res, next) => {
     if(session == null) {
         return
     }
-    console.log('---> session ', session)
-    //query
     const conn = await resumeSalesforceConnection(session)
-    conn.logout((error) => {
-        console.error(new Date() + '-> conn logout error -> ', JSON.stringify(error))
-        return
+    await conn.logout((error) => {
+        if(error) {
+            console.error(new Date() + '-> conn logout error -> ', JSON.stringify(error))
+            return
+        }
     })
 
-    session.destroy((error) => {
+    await session.destroy((error) => {
         if(error) {
             console.error(new Date() + '-> session destroy error -> ', JSON.stringify(error))
         }

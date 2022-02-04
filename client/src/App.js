@@ -8,6 +8,7 @@ function App() {
     const login = async (e) => {
         e.preventDefault()
         console.log('---> clicked login')
+        window.location = '/auth/login'
         axios.get('/auth/login', {
             method: 'GET',
             headers: {
