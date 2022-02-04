@@ -4,7 +4,9 @@ import './App.css';
 
 function App() {
 
-    const login = () => {
+    const login = (e) => {
+        e.preventDefault()
+        console.log('---> clicked login')
         window.location = '/auth/login'
     }
     const [data, setData] = useState(null)
