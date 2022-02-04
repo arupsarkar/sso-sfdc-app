@@ -9,6 +9,7 @@ function App() {
         console.log('---> clicked login')
         const requestOptions = {
             method: 'GET',
+            mode: 'no-cors',
             headers: { 'Access-Control-Allow-Origin': '*' },
         }
         fetch('/auth/login', requestOptions).then(r => console.log(r))
