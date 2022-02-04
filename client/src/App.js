@@ -7,7 +7,11 @@ function App() {
     const login = (e) => {
         e.preventDefault()
         console.log('---> clicked login')
-        fetch('/auth/login').then(r => console.log(r))
+        const requestOptions = {
+            method: 'GET',
+            headers: { 'Access-Control-Allow-Origin': '*' },
+        }
+        fetch('/auth/login', requestOptions).then(r => console.log(r))
 
         //window.location.href = '/auth/login'
     }
