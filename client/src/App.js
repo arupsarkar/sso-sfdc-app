@@ -1,56 +1,55 @@
 import React, {useEffect, useState} from 'react'
 import logo from './logo.svg';
 import './App.css';
+import axios from "axios";
 
 function App() {
 
     const login = async (e) => {
         e.preventDefault()
         console.log('---> clicked login')
-        const requestOptions = {
+        axios.get('/auth/login', {
             method: 'GET',
-            mode: 'no-cors',
-        }
-        await fetch('/auth/login', requestOptions).then(r => console.log(r))
-
+            headers: {
+                'Access-Control-Allow-Origin': '*',
+            }
+        })
+            .then(res => {
+                console.log(res)
+            })
         //window.location.href = '/auth/login'
     }
 
     const getData = async () => {
         console.log('---> getData')
-        const requestOptions = {
-            method: 'GET',
-            mode: 'no-cors',
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept' : 'application/json'
-            },
-        }
-
-        await fetch('/query', requestOptions)
-            .then((res) => {
-                console.log('---> res ', res)
-                setData(res)
-            })
-            .catch(err => {
-                console.log('---> err ', err)
-                setData(err)
+        axios.get('/query')
+            .then(res => {
+                console.log('---> data from server ', JSON.stringify(res.data.records))
+                setData(JSON.stringify(res.data.records))
             })
     }
 
     const logout = () => {
         console.log('---> logout')
+        axios.get('/auth/logout')
+            .then(res => {
+                console.log('---> data from server ', JSON.stringify(res))
+                setData("User Logged Out.")
+            })
+            .catch(err => {
+                setData("User Logged Out error." + err)
+            })
     }
 
     const [data, setData] = useState(null)
 
     useEffect(() => {
-        fetch('/api')
-            .then((res) => {
-                res.json()
-                    .then(r => setData(r.message))
-            })
-    })
+        // fetch('/api')
+        //     .then((res) => {
+        //         res.json()
+        //             .then(r => setData(r.message))
+        //     })
+    }, [data])
 
   return (
     <div className="App">

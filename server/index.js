@@ -29,7 +29,7 @@ app.use(
     session(
         {
             secret: process.env.sessionSecretKey,
-            cookie: {secure: process.env.isHttps === 'true'},
+            cookie: {secure: process.env.isHttps === true},
             resave: false,
             saveUninitialized: false
         }
@@ -37,18 +37,19 @@ app.use(
 )
 
 const getSession = (req, res) => {
-    const session = req.session
-    if(!session.sfdcAuth) {
+    const sess = req.session
+    console.log('---> session : ', sess)
+    if(!sess.sfdcAuth) {
         res.status(401).send('no active session')
         return null
     }
-    return session
+    return sess
 }
 
-const resumeSalesforceConnection = (session) => {
+const resumeSalesforceConnection = (sess) => {
     return new jsforce.Connection({
-        instanceUrl: session.sfdcAuth.instanceUrl,
-        accessToken: session.sfdcAuth.accessToken,
+        instanceUrl: sess.sfdcAuth.instanceUrl,
+        accessToken: sess.sfdcAuth.accessToken,
         version: process.env.apiVersion
     })
 }
@@ -61,6 +62,7 @@ app.get('/api', async (req, res, next) => {
 
 app.get('/auth/login', async (req, res, next) => {
     console.log(new Date(), 'calling oauth login')
+    res.header("Access-Control-Allow-Origin", "*");
     res.redirect(oauth2.getAuthorizationUrl({scope: 'api'}))
 })
 
@@ -116,10 +118,32 @@ app.get('/query', async (req, res, next) => {
         }else{
             console.log('---> result ', result)
             res.send(result)
-            return
         }
 
     })
+
+})
+
+app.get('/auth/logout', async (req, res, next) => {
+    const session = await getSession(req, res)
+    if(session == null) {
+        return
+    }
+    console.log('---> session ', session)
+    //query
+    const conn = await resumeSalesforceConnection(session)
+    conn.logout((error) => {
+        console.error(new Date() + '-> conn logout error -> ', JSON.stringify(error))
+        return
+    })
+
+    session.destroy((error) => {
+        if(error) {
+            console.error(new Date() + '-> session destroy error -> ', JSON.stringify(error))
+        }
+    })
+
+    return res.redirect('/index/html')
 
 })
 
