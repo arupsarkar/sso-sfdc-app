@@ -24,6 +24,7 @@ const oauth2 = new jsforce.OAuth2({
 
 const app = express()
 app.use(cors())
+app.options('*', cors())
 app.use(
     session(
         {
