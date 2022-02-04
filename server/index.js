@@ -36,6 +36,11 @@ app.use(
     )
 )
 
+const getSession = (req, res) => {
+    const session = req.session
+
+}
+
 
 app.get('/api', async (req, res, next) => {
     console.log('calling api endpoint')
@@ -44,6 +49,7 @@ app.get('/api', async (req, res, next) => {
 
 app.get('/auth/login', async (req, res, next) => {
     console.log('calling oauth login')
+    res.set('Access-Control-Allow-Origin', '*')
     res.redirect(oauth2.getAuthorizationUrl({scope: 'api web refresh_token'}))
 })
 
