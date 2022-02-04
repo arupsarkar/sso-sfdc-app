@@ -42,6 +42,10 @@ function App() {
             })
     }
 
+    const gotoCommunity = () => {
+        window.open('https://linkedin-customer-developer-edition.na85.force.com/css/s/', '_blank')
+    }
+
     const [data, setData] = useState(null)
 
     useEffect(() => {
@@ -51,6 +55,8 @@ function App() {
         //             .then(r => setData(r.message))
         //     })
     }, [data])
+
+
 
   return (
     <div className="App">
@@ -67,6 +73,10 @@ function App() {
 
           <button onClick={logout}>
               Logout
+          </button>
+
+          <button onClick={gotoCommunity}>
+              Goto Community
           </button>
       </header>
     </div>
