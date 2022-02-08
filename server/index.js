@@ -63,7 +63,7 @@ app.get('/api', async (req, res, next) => {
 app.get('/auth/login', async (req, res, next) => {
     console.log(new Date(), 'calling oauth login')
     res.header("Access-Control-Allow-Origin", "*");
-    res.redirect(oauth2.getAuthorizationUrl({scope: 'api'}))
+    res.redirect(oauth2.getAuthorizationUrl({scope: 'api web refresh_token'}))
 })
 
 app.get('/auth/callback', async (req, res, next) => {
