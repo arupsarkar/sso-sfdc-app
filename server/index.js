@@ -101,16 +101,16 @@ app.get('/auth/callback', async (req, res, next) => {
 
 app.get('/community', async (req, res, next) => {
 
-    //ensure session is active
-    const session = await getSession(req, res)
-    if(session == null) {
-        return
-    }
-    console.log('---> session ', session)
-    //query
-    const conn = await resumeSalesforceConnection(session)
-    const url = conn.instanceUrl + '/secur/frontdoor.jsp?sid=' + conn.accessToken + '&retURL=https://linkedin-customer-developer-edition.na85.force.com/css/s/'
-    res.redirect(url)
+    // //ensure session is active
+    // const session = await getSession(req, res)
+    // if(session == null) {
+    //     return
+    // }
+    // console.log('---> session ', session)
+    // //query
+    // const conn = await resumeSalesforceConnection(session)
+    // const url = conn.instanceUrl + '/secur/frontdoor.jsp?sid=' + conn.accessToken + '&retURL=https://linkedin-customer-developer-edition.na85.force.com/css/s/'
+    res.redirect('https://linkedin-customer-developer-edition.na85.force.com/css/s/')
 
 })
 
