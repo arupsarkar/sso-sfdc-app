@@ -43,8 +43,19 @@ function App() {
         //     })
     }
 
-    const gotoCommunity = () => {
-        window.open('https://linkedin-customer-developer-edition.na85.force.com/css/s/', '_blank')
+    const gotoCommunity = (e) => {
+        e.preventDefault()
+        axios.get('/community')
+            .then(res => {
+                console.log(res)
+            })
+            .then(data => {
+                console.log(data)
+            })
+            .catch(err => {
+                console.log('---> error ', err)
+            })
+        // window.open('https://linkedin-customer-developer-edition.na85.force.com/css/s/', '_blank')
     }
 
     const [data, setData] = useState(null)
@@ -76,9 +87,12 @@ function App() {
               Logout
           </button>
 
-          <button onClick={gotoCommunity}>
-              Goto Community
+          <button
+            onClick={gotoCommunity}
+          >
+            Goto Community
           </button>
+
       </header>
     </div>
   );

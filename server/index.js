@@ -4,7 +4,7 @@ const jsforce = require('jsforce')
 const session = require('express-session')
 const cors = require('cors')
 const PORT = process.env.PORT || 8080
-
+const axios = require('axios')
 
 require('dotenv').config()
 
@@ -97,6 +97,28 @@ app.get('/auth/callback', async (req, res, next) => {
 
         return res.redirect('/index.html')
     })
+
+})
+
+const gotoCommunity = async (token, url) => {
+    const res = await axios.post(url+'/secur/frontdoor.jsp', {
+        sid: token,
+        retURL: 'https://linkedin-customer-developer-edition.na85.force.com/css/s/'
+    })
+    return res
+}
+
+app.get('/community', async (req, res, next) => {
+
+    //ensure session is active
+    const session = await getSession(req, res)
+    if(session == null) {
+        return
+    }
+    console.log('---> session ', session)
+    //query
+    const conn = await resumeSalesforceConnection(session)
+    const result = await  gotoCommunity(conn.accessToken, conn.instanceUrl)
 
 })
 
