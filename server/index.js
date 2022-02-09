@@ -122,9 +122,10 @@ app.get('/community', async (req, res, next) => {
     if(session == null) {
         return
     }
-    console.log('---> session ', session)
+    console.log('---> community session ', session)
     //query
     const conn = await resumeSalesforceConnection(session)
+    console.log('---> community session token ', conn.accessToken)
     res.json({token: conn.accessToken, url: conn.instanceUrl})
     // const response = gotoCommunity(conn.accessToken, conn.instanceUrl)
     //res.send(response)

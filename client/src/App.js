@@ -37,18 +37,20 @@ function App() {
 
     const gotoCommunity = (e) => {
         e.preventDefault()
-        axios.get('/community')
-            .then(res => {
-                console.log('res' , JSON.stringify(res.data))
-            })
-            .then(data => {
-                console.log('res' , JSON.stringify(data))
-            })
-            .catch(err => {
-                console.log(err)
-            })
+        // let url
+        const retURL = 'https://linkedin-customer-developer-edition.na85.force.com/css'
+        window.open(retURL, '_blank')
+        // axios.get('/community')
+        //     .then(res => {
+        //         url = res.data.url + '/secur/frontdoor.jsp?sid='+res.data.token
+        //         console.log('res' , JSON.stringify(res.data))
+        //         console.log('url' , url)
+        //         window.open(retURL, '_blank')
+        //     })
+        //     .catch(err => {
+        //         console.log(err)
+        //     })
 
-        //window.open('https://linkedin-customer-developer-edition.na85.force.com/css/s/', '_blank')
     }
 
     const [data, setData] = useState(null)
