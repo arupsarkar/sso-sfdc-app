@@ -33,29 +33,11 @@ function App() {
         e.preventDefault()
         console.log('---> logout')
         window.location = '/auth/logout'
-        // axios.get('/auth/logout')
-        //     .then(res => {
-        //         console.log('---> data from server ', JSON.stringify(res))
-        //         setData("User Logged Out.")
-        //     })
-        //     .catch(err => {
-        //         setData("User Logged Out error." + err)
-        //     })
     }
 
     const gotoCommunity = (e) => {
         e.preventDefault()
         window.location ='/community'
-        // axios.get('/community')
-        //     .then(res => {
-        //         console.log(res)
-        //     })
-        //     .then(data => {
-        //         console.log(data)
-        //     })
-        //     .catch(err => {
-        //         console.log('---> error ', err)
-        //     })
         // window.open('https://linkedin-customer-developer-edition.na85.force.com/css/s/', '_blank')
     }
 

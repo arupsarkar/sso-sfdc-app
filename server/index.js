@@ -4,6 +4,7 @@ const jsforce = require('jsforce')
 const session = require('express-session')
 const cors = require('cors')
 const PORT = process.env.PORT || 8080
+const axi0s = require('axios')
 
 require('dotenv').config()
 
@@ -99,18 +100,36 @@ app.get('/auth/callback', async (req, res, next) => {
 
 })
 
+const gotoCommunity = (token, url) => {
+    const retURL = 'https://linkedin-customer-developer-edition.na85.force.com/css/s/'
+    const community_url = url + '/secur/frontdoor.jsp?sid='+token+'&retURL='+retURL
+    axios.post(url)
+        .then(res => {
+            console.log('---> community post res ' + res)
+        })
+        .then(data => {
+            console.log('---> community post data ' + data)
+        })
+        .catch(err => {
+            console.log('---> community error ' + err)
+        })
+}
+
 app.get('/community', async (req, res, next) => {
 
-    // //ensure session is active
-    // const session = await getSession(req, res)
-    // if(session == null) {
-    //     return
-    // }
-    // console.log('---> session ', session)
-    // //query
-    // const conn = await resumeSalesforceConnection(session)
+    //ensure session is active
+    const session = await getSession(req, res)
+    if(session == null) {
+        return
+    }
+    console.log('---> session ', session)
+    //query
+    const conn = await resumeSalesforceConnection(session)
+    const response = gotoCommunity(conn.accessToken, conn.instanceUrl)
+    console.log(response)
+    //res.send(response)
     // const url = conn.instanceUrl + '/secur/frontdoor.jsp?sid=' + conn.accessToken + '&retURL=https://linkedin-customer-developer-edition.na85.force.com/css/s/'
-    res.redirect('https://linkedin-customer-developer-edition.na85.force.com/css/s/')
+    // res.redirect('https://linkedin-customer-developer-edition.na85.force.com/css/s/')
 
 })
 
