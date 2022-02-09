@@ -45,16 +45,17 @@ function App() {
 
     const gotoCommunity = (e) => {
         e.preventDefault()
-        axios.get('/community')
-            .then(res => {
-                console.log(res)
-            })
-            .then(data => {
-                console.log(data)
-            })
-            .catch(err => {
-                console.log('---> error ', err)
-            })
+        window.location ='/community'
+        // axios.get('/community')
+        //     .then(res => {
+        //         console.log(res)
+        //     })
+        //     .then(data => {
+        //         console.log(data)
+        //     })
+        //     .catch(err => {
+        //         console.log('---> error ', err)
+        //     })
         // window.open('https://linkedin-customer-developer-edition.na85.force.com/css/s/', '_blank')
     }
 
