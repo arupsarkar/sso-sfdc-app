@@ -37,8 +37,18 @@ function App() {
 
     const gotoCommunity = (e) => {
         e.preventDefault()
-        window.location.href ='https://linkedin-customer-developer-edition.na85.force.com/css/s/'
-        // window.open('https://linkedin-customer-developer-edition.na85.force.com/css/s/', '_blank')
+        axios.get('/community')
+            .then(res => {
+                console.log('res' , JSON.stringify(res.data))
+            })
+            .then(data => {
+                console.log('res' , JSON.stringify(data))
+            })
+            .catch(err => {
+                console.log(err)
+            })
+
+        //window.open('https://linkedin-customer-developer-edition.na85.force.com/css/s/', '_blank')
     }
 
     const [data, setData] = useState(null)

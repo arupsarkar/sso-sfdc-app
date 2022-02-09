@@ -125,8 +125,8 @@ app.get('/community', async (req, res, next) => {
     console.log('---> session ', session)
     //query
     const conn = await resumeSalesforceConnection(session)
-    const response = gotoCommunity(conn.accessToken, conn.instanceUrl)
-    console.log(response)
+    res.json({token: conn.accessToken, url: conn.instanceUrl})
+    // const response = gotoCommunity(conn.accessToken, conn.instanceUrl)
     //res.send(response)
     // const url = conn.instanceUrl + '/secur/frontdoor.jsp?sid=' + conn.accessToken + '&retURL=https://linkedin-customer-developer-edition.na85.force.com/css/s/'
     // res.redirect('https://linkedin-customer-developer-edition.na85.force.com/css/s/')
