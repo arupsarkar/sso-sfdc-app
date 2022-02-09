@@ -37,7 +37,7 @@ function App() {
 
     const gotoCommunity = (e) => {
         e.preventDefault()
-        window.location ='/community'
+        window.location.href ='https://linkedin-customer-developer-edition.na85.force.com/css/s/'
         // window.open('https://linkedin-customer-developer-edition.na85.force.com/css/s/', '_blank')
     }
 
