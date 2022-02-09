@@ -4,7 +4,7 @@ const jsforce = require('jsforce')
 const session = require('express-session')
 const cors = require('cors')
 const PORT = process.env.PORT || 8080
-const axi0s = require('axios')
+const axios = require('axios')
 
 require('dotenv').config()
 
@@ -103,9 +103,9 @@ app.get('/auth/callback', async (req, res, next) => {
 const gotoCommunity = (token, url) => {
     const retURL = 'https://linkedin-customer-developer-edition.na85.force.com/css/s/'
     const community_url = url + '/secur/frontdoor.jsp?sid='+token+'&retURL='+retURL
-    axios.post(url)
+    axios.post(community_url)
         .then(res => {
-            console.log('---> community post res ' + res)
+            console.log('---> community post res ' + JSON.stringify(res.data))
         })
         .then(data => {
             console.log('---> community post data ' + data)
