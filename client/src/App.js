@@ -35,17 +35,17 @@ function App() {
         window.location = '/auth/logout'
     }
 
-    const gotoCommunity = (e) => {
-        e.preventDefault()
-        // let url
-        const retURL = 'https://linkedin-customer-developer-edition.na85.force.com/css'
+    const gotoCommunity = () => {
+        //e.preventDefault()
+        let url = 'https://login.salesforce.com'
+        const retURL = 'https://linkedin-customer-developer-edition.na85.force.com/css/s/'
         window.open(retURL, '_blank')
         // axios.get('/community')
         //     .then(res => {
-        //         url = res.data.url + '/secur/frontdoor.jsp?sid='+res.data.token
+        //         url = url + '/secur/frontdoor.jsp?sid='+res.data.token+'&retURL='+retURL
         //         console.log('res' , JSON.stringify(res.data))
         //         console.log('url' , url)
-        //         window.open(retURL, '_blank')
+        //         window.open(url, '_blank')
         //     })
         //     .catch(err => {
         //         console.log(err)
@@ -54,14 +54,25 @@ function App() {
     }
 
     const [data, setData] = useState(null)
+    const [user, setUser] = useState(null)
 
     useEffect(() => {
-        // fetch('/api')
-        //     .then((res) => {
-        //         res.json()
-        //             .then(r => setData(r.message))
-        //     })
-    }, [data])
+        console.log('---> user ', user)
+        console.log('---> calling getUser ')
+        axios.get('/getUser')
+            .then(res => {
+                if(!user) {
+                    console.log('---> setting user ', JSON.stringify(res))
+                    setUser(res.data)
+                }
+            })
+            .then(data => {
+                console.log('---> data ', JSON.stringify(data))
+            })
+            .catch(err => {
+                console.log('Error getting User', err)
+            })
+    }, [data, user])
 
 
 
@@ -87,7 +98,7 @@ function App() {
           >
             Goto Community
           </button>
-
+          Welcome {user}
       </header>
     </div>
   );

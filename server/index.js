@@ -2,7 +2,7 @@ const express = require('express')
 const path = require('path')
 const jsforce = require('jsforce')
 const session = require('express-session')
-const cors = require('cors')
+// const cors = require('cors')
 const PORT = process.env.PORT || 8080
 const axios = require('axios')
 
@@ -23,8 +23,8 @@ const oauth2 = new jsforce.OAuth2({
 })
 
 const app = express()
-app.use(cors())
-app.options('*', cors())
+// app.use(cors())
+// app.options('*', cors())
 app.use(
     session(
         {
@@ -115,7 +115,7 @@ const gotoCommunity = (token, url) => {
         })
 }
 
-app.get('/community', async (req, res, next) => {
+app.get('/getUser', async (req, res, next) => {
 
     //ensure session is active
     const session = await getSession(req, res)
@@ -126,12 +126,16 @@ app.get('/community', async (req, res, next) => {
     //query
     const conn = await resumeSalesforceConnection(session)
     console.log('---> community session token ', conn.accessToken)
-    res.json({token: conn.accessToken, url: conn.instanceUrl})
-    // const response = gotoCommunity(conn.accessToken, conn.instanceUrl)
-    //res.send(response)
-    // const url = conn.instanceUrl + '/secur/frontdoor.jsp?sid=' + conn.accessToken + '&retURL=https://linkedin-customer-developer-edition.na85.force.com/css/s/'
-    // res.redirect('https://linkedin-customer-developer-edition.na85.force.com/css/s/')
-
+    conn.identity((error, response) => {
+        if(error) {
+            return
+        }
+        console.log('---> user id ', response.user_id )
+        console.log('---> org id ', response.organization_id )
+        console.log('---> username ', response.username )
+        console.log('---> display name ', response.display_name )
+        res.send(response.display_name)
+    })
 })
 
 app.get('/query', async (req, res, next) => {
